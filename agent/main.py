@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CPA Copilot Agent
+QBO Copilot Agent
 
 Main entry point for the AI agent that processes user requests
 and interacts with QuickBooks Online.
@@ -48,8 +48,8 @@ from agent.tools.qbo_tools import (
 )
 
 
-# System prompt for the CPA Copilot agent
-SYSTEM_PROMPT = """You are CPA Copilot, an AI assistant for Certified Public Accountants.
+# System prompt for the QBO Copilot agent
+SYSTEM_PROMPT = """You are QBO Copilot, an AI assistant for Certified Public Accountants.
 
 You help CPAs manage their clients' QuickBooks Online data through natural conversation.
 You have access to the following tools:
@@ -83,7 +83,7 @@ You have access to the following tools:
 
 class CPACopilotAgent:
     """
-    CPA Copilot Agent
+    QBO Copilot Agent
 
     Handles natural language requests and executes QBO operations.
     Can be integrated with OpenClaw or used standalone.
@@ -241,7 +241,7 @@ class CPACopilotAgent:
 
             # Help
             if "help" in message_lower:
-                return """**CPA Copilot Help**
+                return """**QBO Copilot Help**
 
 I can help you with QuickBooks Online queries:
 
@@ -255,7 +255,7 @@ I can help you with QuickBooks Online queries:
 Just ask in natural language!"""
 
             # Default response
-            return """I'm CPA Copilot. I can help you query QuickBooks Online data.
+            return """I'm QBO Copilot. I can help you query QuickBooks Online data.
 
 Try asking:
 • "Show me expense accounts"
@@ -271,7 +271,7 @@ Type "help" for more options."""
 
 def create_agent(llm_callback: Optional[Callable] = None) -> CPACopilotAgent:
     """
-    Factory function to create a CPA Copilot agent
+    Factory function to create a QBO Copilot agent
 
     Args:
         llm_callback: Optional LLM callback for OpenClaw integration
@@ -285,7 +285,7 @@ def create_agent(llm_callback: Optional[Callable] = None) -> CPACopilotAgent:
 # Interactive CLI for testing
 if __name__ == "__main__":
     print("=" * 60)
-    print("CPA Copilot - Interactive Mode")
+    print("QBO Copilot - Interactive Mode")
     print("=" * 60)
     print("\nType 'quit' to exit, 'help' for commands\n")
 
@@ -301,7 +301,7 @@ if __name__ == "__main__":
                 break
 
             response = agent.process_message(user_input)
-            print(f"\nCPA Copilot:\n{response}\n")
+            print(f"\nQBO Copilot:\n{response}\n")
 
         except KeyboardInterrupt:
             print("\nGoodbye!")

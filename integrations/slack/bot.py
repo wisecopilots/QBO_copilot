@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Slack Bot for CPA Copilot
+Slack Bot for QBO Copilot
 
-Connects the CPA Copilot agent to Slack using Socket Mode.
+Connects the QBO Copilot agent to Slack using Socket Mode.
 Users can interact with the agent through:
 - Direct messages
-- Channel mentions (@CPA Copilot)
+- Channel mentions (@QBO Copilot)
 - Slash commands (/qbo)
 
 Setup:
@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 class CPACopilotSlackBot:
-    """Slack bot that interfaces with CPA Copilot agent"""
+    """Slack bot that interfaces with QBO Copilot agent"""
 
     def __init__(self, agent_callback=None):
         """
@@ -168,7 +168,7 @@ class CPACopilotSlackBot:
 
     def start(self):
         """Start the Slack bot"""
-        logger.info("Starting CPA Copilot Slack Bot...")
+        logger.info("Starting QBO Copilot Slack Bot...")
         handler = SocketModeHandler(self.app, self.app_token)
         handler.start()
 

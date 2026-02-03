@@ -1,10 +1,12 @@
-# CPA Copilot
+# QBO Copilot
 
-AI-powered assistant for CPAs to manage QuickBooks Online clients through conversational interfaces.
+AI-powered assistant for managing QuickBooks Online through conversational interfaces.
+
+**Contact:** jim.voltbot@gmail.com
 
 ## Overview
 
-CPA Copilot is an AI agent that acts as a member of your Slack/Teams/WhatsApp community, helping CPAs:
+QBO Copilot is an AI agent that acts as a member of your Slack/Teams/WhatsApp community, helping you:
 - Query QuickBooks Online data across multiple client companies
 - Execute accounting workflows through natural language
 - Follow up with company employees via email/messaging
@@ -21,7 +23,7 @@ CPA Copilot is an AI agent that acts as a member of your Slack/Teams/WhatsApp co
 │       └──────────┼──────────┼──────────┘                   │
 │                  ▼                                          │
 │         ┌───────────────┐                                   │
-│         │  CPA Copilot  │ ◄── OpenClaw + Claude            │
+│         │  QBO Copilot  │ ◄── OpenClaw + Claude            │
 │         │    (Agent)    │                                   │
 │         └───────┬───────┘                                   │
 │                 │                                           │
@@ -37,7 +39,7 @@ CPA Copilot is an AI agent that acts as a member of your Slack/Teams/WhatsApp co
 ## Project Structure
 
 ```
-cpa-copilot/
+qbo-copilot/
 ├── agent/                    # OpenClaw/Claude brain
 │   ├── main.py              # Agent entry point
 │   ├── tools/               # Agent tools
@@ -77,8 +79,8 @@ cpa-copilot/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_ORG/cpa-copilot.git
-cd cpa-copilot
+git clone https://github.com/jimbojumbojetplane/qbo-copilot.git
+cd qbo-copilot
 ```
 
 2. Copy and configure environment:

@@ -4,7 +4,7 @@ services:
   # n8n workflow engine
   n8n:
     image: n8nio/n8n:latest
-    container_name: cpa-copilot-n8n
+    container_name: qbo-copilot-n8n
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -20,14 +20,14 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
-      - cpa-copilot
+      - qbo-copilot
 
   # CPA Copilot Agent
   agent:
     build:
       context: .
       dockerfile: Dockerfile.agent
-    container_name: cpa-copilot-agent
+    container_name: qbo-copilot-agent
     restart: unless-stopped
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
@@ -42,14 +42,14 @@ services:
     depends_on:
       - n8n
     networks:
-      - cpa-copilot
+      - qbo-copilot
 
   # Slack Bot (Socket Mode)
   slack-bot:
     build:
       context: .
       dockerfile: Dockerfile.slack
-    container_name: cpa-copilot-slack
+    container_name: qbo-copilot-slack
     restart: unless-stopped
     environment:
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
@@ -58,12 +58,12 @@ services:
     depends_on:
       - agent
     networks:
-      - cpa-copilot
+      - qbo-copilot
 
 volumes:
   n8n_data:
     driver: local
 
 networks:
-  cpa-copilot:
+  qbo-copilot:
     driver: bridge

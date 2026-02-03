@@ -1,1 +1,1 @@
-"""CPA Copilot Agent module"""
+"""QBO Copilot Agent module"""
