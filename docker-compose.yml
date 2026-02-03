@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # n8n workflow engine
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: cpa-copilot-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - GENERIC_TIMEZONE=America/Toronto
+      - TZ=America/Toronto
+      - N8N_METRICS=true
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - cpa-copilot
+
+  # CPA Copilot Agent
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    container_name: cpa-copilot-agent
+    restart: unless-stopped
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - QBO_CLIENT_ID=${QBO_CLIENT_ID}
+      - QBO_CLIENT_SECRET=${QBO_CLIENT_SECRET}
+      - QBO_ENVIRONMENT=${QBO_ENVIRONMENT:-sandbox}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_APP_TOKEN=${SLACK_APP_TOKEN}
+    volumes:
+      - ./config:/app/config
+      - ./qbo/tokens:/app/qbo/tokens
+    depends_on:
+      - n8n
+    networks:
+      - cpa-copilot
+
+  # Slack Bot (Socket Mode)
+  slack-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.slack
+    container_name: cpa-copilot-slack
+    restart: unless-stopped
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_APP_TOKEN=${SLACK_APP_TOKEN}
+      - AGENT_URL=http://agent:8000
+    depends_on:
+      - agent
+    networks:
+      - cpa-copilot
+
+volumes:
+  n8n_data:
+    driver: local
+
+networks:
+  cpa-copilot:
+    driver: bridge

@@ -1,0 +1,23 @@
+# CPA Copilot - Client Companies Configuration
+#
+# Each client represents a QBO company that the CPA has access to.
+# The agent can switch between clients to query different companies.
+
+clients:
+  # QBO Sandbox Company (for development/testing)
+  - name: "Sandbox Company"
+    realm_id: "9341456144523072"
+    primary_contact: "sandbox@example.com"
+    slack_channel: "#qbo-sandbox"
+    metadata:
+      environment: sandbox
+      notes: "Intuit developer sandbox for testing"
+
+  # Add more clients as needed:
+  # - name: "Acme Corporation"
+  #   realm_id: "1234567890"
+  #   primary_contact: "cfo@acme.com"
+  #   slack_channel: "#acme-accounting"
+  #   metadata:
+  #     industry: "Manufacturing"
+  #     fiscal_year_end: "December"
