@@ -224,10 +224,400 @@ def qbo_switch_client(client_name_or_id: str) -> Dict[str, str]:
 
 
 # =============================================================================
+# CRUD Operations (Create, Update, Delete)
+# =============================================================================
+
+def qbo_get_entity(entity_type: str, entity_id: str) -> Dict[str, Any]:
+    """
+    Get a single entity by ID.
+
+    Args:
+        entity_type: Type of entity (Invoice, Customer, Vendor, Purchase, Account)
+        entity_id: The entity ID
+
+    Returns:
+        Entity data with all fields
+    """
+    client = _get_qbo_client()
+    return client.get_entity(entity_type, entity_id)
+
+
+def qbo_get_tax_codes() -> List[Dict[str, Any]]:
+    """
+    Get available tax codes for invoices.
+
+    Returns:
+        List of tax codes with Id, Name, and Active status.
+        Use the Id when creating invoices with tax_code_id parameter.
+    """
+    client = _get_qbo_client()
+    result = client.query("SELECT * FROM TaxCode WHERE Active = true")
+    return result.get('QueryResponse', {}).get('TaxCode', [])
+
+
+def qbo_create_customer(
+    display_name: str,
+    email: Optional[str] = None,
+    phone: Optional[str] = None,
+    company_name: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Create a new customer in QuickBooks Online.
+
+    Args:
+        display_name: Customer display name (required, must be unique)
+        email: Primary email address
+        phone: Primary phone number
+        company_name: Company/business name
+
+    Returns:
+        Created customer data including Id and SyncToken
+    """
+    client = _get_qbo_client()
+    result = client.create_customer(
+        display_name=display_name,
+        email=email,
+        phone=phone,
+        company_name=company_name
+    )
+    return {
+        'success': True,
+        'customer': result,
+        'message': f"Created customer: {result.get('DisplayName')} (ID: {result.get('Id')})"
+    }
+
+
+def qbo_update_customer(
+    customer_id: str,
+    sync_token: str,
+    display_name: Optional[str] = None,
+    email: Optional[str] = None,
+    phone: Optional[str] = None,
+    active: Optional[bool] = None
+) -> Dict[str, Any]:
+    """
+    Update an existing customer.
+
+    Args:
+        customer_id: Customer ID to update
+        sync_token: Current SyncToken (get from qbo_get_entity first)
+        display_name: New display name
+        email: New email address
+        phone: New phone number
+        active: Set active status (False to deactivate)
+
+    Returns:
+        Updated customer data
+    """
+    client = _get_qbo_client()
+    result = client.update_customer(
+        customer_id=customer_id,
+        sync_token=sync_token,
+        display_name=display_name,
+        email=email,
+        phone=phone,
+        active=active
+    )
+    return {
+        'success': True,
+        'customer': result,
+        'message': f"Updated customer: {result.get('DisplayName')}"
+    }
+
+
+def qbo_create_vendor(
+    display_name: str,
+    email: Optional[str] = None,
+    phone: Optional[str] = None,
+    company_name: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Create a new vendor in QuickBooks Online.
+
+    Args:
+        display_name: Vendor display name (required, must be unique)
+        email: Primary email address
+        phone: Primary phone number
+        company_name: Company/business name
+
+    Returns:
+        Created vendor data including Id and SyncToken
+    """
+    client = _get_qbo_client()
+    result = client.create_vendor(
+        display_name=display_name,
+        email=email,
+        phone=phone,
+        company_name=company_name
+    )
+    return {
+        'success': True,
+        'vendor': result,
+        'message': f"Created vendor: {result.get('DisplayName')} (ID: {result.get('Id')})"
+    }
+
+
+def qbo_update_vendor(
+    vendor_id: str,
+    sync_token: str,
+    display_name: Optional[str] = None,
+    email: Optional[str] = None,
+    phone: Optional[str] = None,
+    active: Optional[bool] = None
+) -> Dict[str, Any]:
+    """
+    Update an existing vendor.
+
+    Args:
+        vendor_id: Vendor ID to update
+        sync_token: Current SyncToken (get from qbo_get_entity first)
+        display_name: New display name
+        email: New email address
+        phone: New phone number
+        active: Set active status (False to deactivate)
+
+    Returns:
+        Updated vendor data
+    """
+    client = _get_qbo_client()
+    result = client.update_vendor(
+        vendor_id=vendor_id,
+        sync_token=sync_token,
+        display_name=display_name,
+        email=email,
+        phone=phone,
+        active=active
+    )
+    return {
+        'success': True,
+        'vendor': result,
+        'message': f"Updated vendor: {result.get('DisplayName')}"
+    }
+
+
+def qbo_create_invoice(
+    customer_id: str,
+    line_items: List[Dict[str, Any]],
+    due_date: Optional[str] = None,
+    doc_number: Optional[str] = None,
+    customer_memo: Optional[str] = None,
+    tax_code_id: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Create a new invoice in QuickBooks Online.
+
+    IMPORTANT: This creates a real invoice. Use with confirmation flow.
+
+    Args:
+        customer_id: Customer ID to bill
+        line_items: List of line items, each with:
+            - description: Line description (required)
+            - amount: Line amount in dollars (required)
+            - quantity: Optional quantity (default 1)
+            - unit_price: Optional unit price
+            - tax_code_id: Optional tax code for this line
+        due_date: Due date in YYYY-MM-DD format
+        doc_number: Invoice number (auto-generated if not provided)
+        customer_memo: Memo visible to customer
+        tax_code_id: Default tax code ID for all lines (e.g., "5" for HST ON, "2" for Exempt)
+
+    Returns:
+        Created invoice data including DocNumber and Id
+    """
+    client = _get_qbo_client()
+    result = client.create_invoice(
+        customer_id=customer_id,
+        line_items=line_items,
+        due_date=due_date,
+        doc_number=doc_number,
+        customer_memo=customer_memo,
+        tax_code_id=tax_code_id
+    )
+    return {
+        'success': True,
+        'invoice': result,
+        'message': f"Created invoice #{result.get('DocNumber')} for ${result.get('TotalAmt', 0):.2f}",
+        'confirmation_required': False  # Already created
+    }
+
+
+def qbo_update_invoice(
+    invoice_id: str,
+    sync_token: str,
+    line_items: Optional[List[Dict[str, Any]]] = None,
+    due_date: Optional[str] = None,
+    customer_memo: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Update an existing invoice.
+
+    Args:
+        invoice_id: Invoice ID to update
+        sync_token: Current SyncToken (get from qbo_get_entity first)
+        line_items: New line items (replaces all existing)
+        due_date: New due date
+        customer_memo: New customer memo
+
+    Returns:
+        Updated invoice data
+    """
+    client = _get_qbo_client()
+    result = client.update_invoice(
+        invoice_id=invoice_id,
+        sync_token=sync_token,
+        line_items=line_items,
+        due_date=due_date,
+        customer_memo=customer_memo
+    )
+    return {
+        'success': True,
+        'invoice': result,
+        'message': f"Updated invoice #{result.get('DocNumber')}"
+    }
+
+
+def qbo_void_invoice(invoice_id: str, sync_token: str) -> Dict[str, Any]:
+    """
+    Void an invoice. This cannot be undone.
+
+    IMPORTANT: This is a destructive operation. Use with confirmation flow.
+
+    Args:
+        invoice_id: Invoice ID to void
+        sync_token: Current SyncToken (get from qbo_get_entity first)
+
+    Returns:
+        Voided invoice data
+    """
+    client = _get_qbo_client()
+    result = client.void_invoice(invoice_id=invoice_id, sync_token=sync_token)
+    return {
+        'success': True,
+        'invoice': result,
+        'message': f"Voided invoice #{result.get('DocNumber')}",
+        'warning': 'This action cannot be undone'
+    }
+
+
+def qbo_delete_invoice(invoice_id: str, sync_token: str) -> Dict[str, Any]:
+    """
+    Permanently delete an invoice. This cannot be undone.
+
+    IMPORTANT: This is a destructive operation. Use with confirmation flow.
+    Consider using qbo_void_invoice instead to preserve records.
+
+    Args:
+        invoice_id: Invoice ID to delete
+        sync_token: Current SyncToken (get from qbo_get_entity first)
+
+    Returns:
+        Deletion confirmation
+    """
+    client = _get_qbo_client()
+    result = client.delete_invoice(invoice_id=invoice_id, sync_token=sync_token)
+    return {
+        'success': True,
+        'result': result,
+        'message': f"Deleted invoice {invoice_id}",
+        'warning': 'This action cannot be undone'
+    }
+
+
+def qbo_send_invoice(invoice_id: str, email: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Email an invoice to the customer.
+
+    Args:
+        invoice_id: Invoice ID to send
+        email: Override recipient email (uses customer's email if not provided)
+
+    Returns:
+        Send confirmation with delivery info
+    """
+    client = _get_qbo_client()
+    result = client.send_invoice(invoice_id=invoice_id, email=email)
+    return {
+        'success': True,
+        'invoice': result,
+        'message': f"Sent invoice #{result.get('DocNumber')} to {email or 'customer email'}"
+    }
+
+
+def qbo_create_expense(
+    account_id: str,
+    vendor_id: Optional[str] = None,
+    line_items: Optional[List[Dict[str, Any]]] = None,
+    txn_date: Optional[str] = None,
+    payment_type: str = "Cash",
+    total_amount: Optional[float] = None,
+    memo: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Create a new expense/purchase in QuickBooks Online.
+
+    Args:
+        account_id: Bank or Credit Card account ID
+        vendor_id: Vendor ID (optional)
+        line_items: List of expense lines with:
+            - amount: Line amount
+            - account_id: Expense account ID
+            - description: Line description
+        txn_date: Transaction date (YYYY-MM-DD)
+        payment_type: "Cash", "Check", or "CreditCard"
+        total_amount: Total amount (if not using line_items)
+        memo: Private memo
+
+    Returns:
+        Created purchase data
+    """
+    client = _get_qbo_client()
+    result = client.create_expense(
+        account_id=account_id,
+        vendor_id=vendor_id,
+        line_items=line_items,
+        txn_date=txn_date,
+        payment_type=payment_type,
+        total_amount=total_amount,
+        memo=memo
+    )
+    return {
+        'success': True,
+        'purchase': result,
+        'message': f"Created expense for ${result.get('TotalAmt', 0):.2f}"
+    }
+
+
+def qbo_delete_expense(purchase_id: str, sync_token: str) -> Dict[str, Any]:
+    """
+    Delete an expense/purchase. This cannot be undone.
+
+    IMPORTANT: This is a destructive operation. Use with confirmation flow.
+
+    Args:
+        purchase_id: Purchase ID to delete
+        sync_token: Current SyncToken (get from qbo_get_entity first)
+
+    Returns:
+        Deletion confirmation
+    """
+    client = _get_qbo_client()
+    result = client.delete_purchase(purchase_id=purchase_id, sync_token=sync_token)
+    return {
+        'success': True,
+        'result': result,
+        'message': f"Deleted expense {purchase_id}",
+        'warning': 'This action cannot be undone'
+    }
+
+
+# =============================================================================
 # Tool Registry for Agent Frameworks
 # =============================================================================
 
 qbo_tools = [
+    # -------------------------------------------------------------------------
+    # Read Operations
+    # -------------------------------------------------------------------------
     {
         'name': 'qbo_query',
         'description': 'Execute a QBO Query Language query against QuickBooks Online',
@@ -241,6 +631,22 @@ qbo_tools = [
                 }
             },
             'required': ['query']
+        }
+    },
+    {
+        'name': 'qbo_get_entity',
+        'description': 'Get a single entity by type and ID',
+        'function': qbo_get_entity,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'entity_type': {
+                    'type': 'string',
+                    'description': 'Entity type: Invoice, Customer, Vendor, Purchase, Account'
+                },
+                'entity_id': {'type': 'string', 'description': 'Entity ID'}
+            },
+            'required': ['entity_type', 'entity_id']
         }
     },
     {
@@ -300,6 +706,9 @@ qbo_tools = [
             }
         }
     },
+    # -------------------------------------------------------------------------
+    # Multi-Tenant Operations
+    # -------------------------------------------------------------------------
     {
         'name': 'qbo_list_clients',
         'description': 'List all configured QBO client companies',
@@ -320,6 +729,216 @@ qbo_tools = [
             },
             'required': ['client_name_or_id']
         }
+    },
+    # -------------------------------------------------------------------------
+    # Customer CRUD Operations
+    # -------------------------------------------------------------------------
+    {
+        'name': 'qbo_create_customer',
+        'description': 'Create a new customer in QuickBooks Online',
+        'function': qbo_create_customer,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'display_name': {'type': 'string', 'description': 'Customer display name (required, must be unique)'},
+                'email': {'type': 'string', 'description': 'Primary email address'},
+                'phone': {'type': 'string', 'description': 'Primary phone number'},
+                'company_name': {'type': 'string', 'description': 'Company/business name'}
+            },
+            'required': ['display_name']
+        }
+    },
+    {
+        'name': 'qbo_update_customer',
+        'description': 'Update an existing customer. Get SyncToken first with qbo_get_entity.',
+        'function': qbo_update_customer,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'customer_id': {'type': 'string', 'description': 'Customer ID to update'},
+                'sync_token': {'type': 'string', 'description': 'Current SyncToken from qbo_get_entity'},
+                'display_name': {'type': 'string', 'description': 'New display name'},
+                'email': {'type': 'string', 'description': 'New email address'},
+                'phone': {'type': 'string', 'description': 'New phone number'},
+                'active': {'type': 'boolean', 'description': 'Set active status (False to deactivate)'}
+            },
+            'required': ['customer_id', 'sync_token']
+        }
+    },
+    # -------------------------------------------------------------------------
+    # Vendor CRUD Operations
+    # -------------------------------------------------------------------------
+    {
+        'name': 'qbo_create_vendor',
+        'description': 'Create a new vendor in QuickBooks Online',
+        'function': qbo_create_vendor,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'display_name': {'type': 'string', 'description': 'Vendor display name (required, must be unique)'},
+                'email': {'type': 'string', 'description': 'Primary email address'},
+                'phone': {'type': 'string', 'description': 'Primary phone number'},
+                'company_name': {'type': 'string', 'description': 'Company/business name'}
+            },
+            'required': ['display_name']
+        }
+    },
+    {
+        'name': 'qbo_update_vendor',
+        'description': 'Update an existing vendor. Get SyncToken first with qbo_get_entity.',
+        'function': qbo_update_vendor,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'vendor_id': {'type': 'string', 'description': 'Vendor ID to update'},
+                'sync_token': {'type': 'string', 'description': 'Current SyncToken from qbo_get_entity'},
+                'display_name': {'type': 'string', 'description': 'New display name'},
+                'email': {'type': 'string', 'description': 'New email address'},
+                'phone': {'type': 'string', 'description': 'New phone number'},
+                'active': {'type': 'boolean', 'description': 'Set active status (False to deactivate)'}
+            },
+            'required': ['vendor_id', 'sync_token']
+        }
+    },
+    # -------------------------------------------------------------------------
+    # Invoice CRUD Operations
+    # -------------------------------------------------------------------------
+    {
+        'name': 'qbo_get_tax_codes',
+        'description': 'Get available tax codes for invoices (use before creating invoices)',
+        'function': qbo_get_tax_codes,
+        'parameters': {'type': 'object', 'properties': {}}
+    },
+    {
+        'name': 'qbo_create_invoice',
+        'description': 'Create a new invoice. IMPORTANT: Creates a real invoice - use with confirmation.',
+        'function': qbo_create_invoice,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'customer_id': {'type': 'string', 'description': 'Customer ID to bill'},
+                'line_items': {
+                    'type': 'array',
+                    'description': 'Line items with description, amount, optional quantity/unit_price/tax_code_id',
+                    'items': {
+                        'type': 'object',
+                        'properties': {
+                            'description': {'type': 'string'},
+                            'amount': {'type': 'number'},
+                            'quantity': {'type': 'number'},
+                            'unit_price': {'type': 'number'},
+                            'tax_code_id': {'type': 'string'}
+                        },
+                        'required': ['description', 'amount']
+                    }
+                },
+                'due_date': {'type': 'string', 'description': 'YYYY-MM-DD format'},
+                'doc_number': {'type': 'string', 'description': 'Invoice number (auto-generated if not provided)'},
+                'customer_memo': {'type': 'string', 'description': 'Memo visible to customer'},
+                'tax_code_id': {'type': 'string', 'description': 'Default tax code ID (e.g., "5" for HST ON, "2" for Exempt). Use qbo_get_tax_codes to list options.'}
+            },
+            'required': ['customer_id', 'line_items']
+        }
+    },
+    {
+        'name': 'qbo_update_invoice',
+        'description': 'Update an existing invoice. Get SyncToken first with qbo_get_entity.',
+        'function': qbo_update_invoice,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'invoice_id': {'type': 'string', 'description': 'Invoice ID to update'},
+                'sync_token': {'type': 'string', 'description': 'Current SyncToken from qbo_get_entity'},
+                'line_items': {
+                    'type': 'array',
+                    'description': 'New line items (replaces all existing)',
+                    'items': {'type': 'object'}
+                },
+                'due_date': {'type': 'string', 'description': 'New due date YYYY-MM-DD'},
+                'customer_memo': {'type': 'string', 'description': 'New customer memo'}
+            },
+            'required': ['invoice_id', 'sync_token']
+        }
+    },
+    {
+        'name': 'qbo_void_invoice',
+        'description': 'Void an invoice. DESTRUCTIVE - cannot be undone. Use with confirmation.',
+        'function': qbo_void_invoice,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'invoice_id': {'type': 'string', 'description': 'Invoice ID to void'},
+                'sync_token': {'type': 'string', 'description': 'Current SyncToken from qbo_get_entity'}
+            },
+            'required': ['invoice_id', 'sync_token']
+        },
+        'confirmation_required': True
+    },
+    {
+        'name': 'qbo_delete_invoice',
+        'description': 'Permanently delete an invoice. DESTRUCTIVE - cannot be undone. Consider void instead.',
+        'function': qbo_delete_invoice,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'invoice_id': {'type': 'string', 'description': 'Invoice ID to delete'},
+                'sync_token': {'type': 'string', 'description': 'Current SyncToken from qbo_get_entity'}
+            },
+            'required': ['invoice_id', 'sync_token']
+        },
+        'confirmation_required': True
+    },
+    {
+        'name': 'qbo_send_invoice',
+        'description': 'Email an invoice to the customer',
+        'function': qbo_send_invoice,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'invoice_id': {'type': 'string', 'description': 'Invoice ID to send'},
+                'email': {'type': 'string', 'description': 'Override recipient email (optional)'}
+            },
+            'required': ['invoice_id']
+        }
+    },
+    # -------------------------------------------------------------------------
+    # Expense/Purchase Operations
+    # -------------------------------------------------------------------------
+    {
+        'name': 'qbo_create_expense',
+        'description': 'Create a new expense/purchase in QuickBooks Online',
+        'function': qbo_create_expense,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'account_id': {'type': 'string', 'description': 'Bank or Credit Card account ID'},
+                'vendor_id': {'type': 'string', 'description': 'Vendor ID (optional)'},
+                'line_items': {
+                    'type': 'array',
+                    'description': 'Expense lines with amount, account_id, description',
+                    'items': {'type': 'object'}
+                },
+                'txn_date': {'type': 'string', 'description': 'Transaction date YYYY-MM-DD'},
+                'payment_type': {'type': 'string', 'enum': ['Cash', 'Check', 'CreditCard'], 'default': 'Cash'},
+                'total_amount': {'type': 'number', 'description': 'Total amount (if not using line_items)'},
+                'memo': {'type': 'string', 'description': 'Private memo'}
+            },
+            'required': ['account_id']
+        }
+    },
+    {
+        'name': 'qbo_delete_expense',
+        'description': 'Delete an expense/purchase. DESTRUCTIVE - cannot be undone. Use with confirmation.',
+        'function': qbo_delete_expense,
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'purchase_id': {'type': 'string', 'description': 'Purchase ID to delete'},
+                'sync_token': {'type': 'string', 'description': 'Current SyncToken from qbo_get_entity'}
+            },
+            'required': ['purchase_id', 'sync_token']
+        },
+        'confirmation_required': True
     }
 ]
 
