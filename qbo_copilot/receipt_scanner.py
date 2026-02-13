@@ -14,7 +14,7 @@ import anthropic
 
 logger = logging.getLogger(__name__)
 
-EXTRACTION_PROMPT = """Analyze this {doc_type} image and extract all relevant financial data into structured JSON.
+EXTRACTION_PROMPT = """Analyze this {doc_type} image carefully. First, read ALL visible text on the document — every word, number, and label you can see. Then extract structured financial data.
 
 Return ONLY valid JSON with the following structure (omit fields that are not present):
 
@@ -38,14 +38,17 @@ Return ONLY valid JSON with the following structure (omit fields that are not pr
       "amount": 0.00
     }}
   ],
+  "all_text": "ALL visible text on the document transcribed verbatim, preserving layout as much as possible",
   "notes": "Any additional relevant info (addresses, account numbers with last 4 only, memo fields)"
 }}
 
 Important:
-- Use null for fields you cannot read or that don't exist
+- Read the image very carefully — zoom into all areas including headers, footers, fine print, handwriting
+- The "all_text" field MUST contain every piece of text visible on the document
+- Use null for structured fields you cannot read or that don't exist
 - Amounts should be numbers, not strings
 - Dates must be YYYY-MM-DD
-- For unclear text, provide your best reading with a note
+- For unclear text, provide your best reading with [unclear] marker
 - Do NOT include full account numbers or sensitive data"""
 
 DOC_TYPE_LABELS = {
@@ -103,6 +106,7 @@ def scan_receipt(
     )
 
     raw_text = response.content[0].text.strip()
+    logger.info(f"Vision response ({len(image_bytes)} bytes image, {mime_type}): {raw_text[:500]}")
 
     # Strip markdown code fences if present
     if raw_text.startswith("```"):

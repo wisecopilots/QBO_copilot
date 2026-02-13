@@ -1,7 +1,7 @@
 {
   "display_information": {
     "name": "QBO Copilot",
-    "description": "QuickBooks Online assistant for accounting operations",
+    "description": "QuickBooks Online assistant for accounting operations and client onboarding",
     "background_color": "#2c5f2d"
   },
   "features": {
@@ -21,6 +21,20 @@
         "usage_hint": "[invoices|customers|accounts|help]",
         "should_escape": false
       }
+    ],
+    "shortcuts": [
+      {
+        "name": "Convert to Case",
+        "type": "message",
+        "callback_id": "convert_to_case",
+        "description": "Convert this message into a trackable case"
+      },
+      {
+        "name": "Request Documents",
+        "type": "message",
+        "callback_id": "request_docs",
+        "description": "Request documents from client"
+      }
     ]
   },
   "oauth_config": {
@@ -29,14 +43,19 @@
         "app_mentions:read",
         "channels:history",
         "channels:read",
+        "channels:manage",
+        "channels:join",
         "chat:write",
         "commands",
+        "files:read",
+        "files:write",
         "groups:history",
         "groups:read",
         "im:history",
         "im:read",
         "im:write",
         "mpim:history",
+        "pins:write",
         "reactions:read",
         "reactions:write",
         "users:read"
@@ -47,7 +66,10 @@
     "event_subscriptions": {
       "bot_events": [
         "app_mention",
-        "message.im"
+        "app_home_opened",
+        "message.im",
+        "message.channels",
+        "message.groups"
       ]
     },
     "interactivity": {

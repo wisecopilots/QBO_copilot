@@ -19,6 +19,174 @@ def format_currency(amount) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Help / Capabilities
+# ---------------------------------------------------------------------------
+
+def _build_help_blocks() -> List[Dict]:
+    """Build help message showing all QBO Copilot capabilities"""
+    return [
+        {
+            "type": "header",
+            "text": {"type": "plain_text", "text": "QBO Copilot — Help"},
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "*How it works:* Just talk to the bot in plain English — either DM it "
+                    "or use `/qbo <your question>`. An AI agent reads your request, picks the "
+                    "right QuickBooks API calls, and replies with the answer.\n\n"
+                    "_You don't need to memorize commands. Just ask for what you need._"
+                ),
+            },
+        },
+        {"type": "divider"},
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "*:mag: Look Up Data*\n"
+                    "`/qbo show me expense accounts`\n"
+                    "`/qbo list unpaid invoices`\n"
+                    "`/qbo who are my vendors?`\n"
+                    "`/qbo what's the balance for customer Acme Corp?`\n"
+                    "`/qbo show purchases from last month`"
+                ),
+            },
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "*:pencil2: Create & Update*\n"
+                    "`/qbo create customer John Smith, john@example.com`\n"
+                    "`/qbo create invoice for customer 123, web design $2500`\n"
+                    "`/qbo add expense $50 to Office Supplies from Staples`\n"
+                    "`/qbo create vendor FedEx`"
+                ),
+            },
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "*:email: Invoice Actions*\n"
+                    "`/qbo send invoice 1045 to client`\n"
+                    "`/qbo void invoice 1032`\n"
+                    "`/qbo show me overdue invoices`"
+                ),
+            },
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "*:receipt: Receipt Scanning*\n"
+                    "Upload an image in this DM — the bot will ask you to classify it "
+                    "(receipt, invoice, bill, etc.), then scan it with AI vision to extract "
+                    "vendor, amount, date, and line items. Review and approve the results.\n"
+                    "`/qbo receipts` — view the receipt queue"
+                ),
+            },
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "*:office: Multi-Company*\n"
+                    "If you manage multiple QBO companies, the bot will ask you to pick one "
+                    "when you first message it. You can switch anytime:\n"
+                    "`/qbo switch to Acme Corp`"
+                ),
+            },
+        },
+        {"type": "divider"},
+        {
+            "type": "context",
+            "elements": [{
+                "type": "mrkdwn",
+                "text": (
+                    "*Slash command:* `/qbo <question>` | "
+                    "*DM:* message this bot directly | "
+                    "*Mention:* @QBO Copilot in a channel | "
+                    "`/qbo help` for this message"
+                ),
+            }],
+        },
+    ]
+
+
+def build_home_capabilities_blocks() -> List[Dict]:
+    """Build capabilities summary section for the Home tab"""
+    return [
+        {"type": "divider"},
+        {
+            "type": "header",
+            "text": {"type": "plain_text", "text": "What Can I Do?"},
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": (
+                    "Talk to me in plain English — DM me or use `/qbo <question>`."
+                ),
+            },
+        },
+        {
+            "type": "section",
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": (
+                        "*:mag: Query QBO*\n"
+                        "Accounts, customers, vendors,\n"
+                        "invoices, expenses, balances"
+                    ),
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": (
+                        "*:pencil2: Create & Edit*\n"
+                        "Customers, vendors, invoices,\n"
+                        "expenses — just ask"
+                    ),
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": (
+                        "*:receipt: Scan Receipts*\n"
+                        "Upload an image in this DM.\n"
+                        "AI extracts vendor, amount, date"
+                    ),
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": (
+                        "*:email: Invoice Actions*\n"
+                        "Send, void, or delete invoices.\n"
+                        "Track unpaid & overdue"
+                    ),
+                },
+            ],
+        },
+        {
+            "type": "context",
+            "elements": [{
+                "type": "mrkdwn",
+                "text": "Type `/qbo help` for examples and detailed usage.",
+            }],
+        },
+    ]
+
+
+# ---------------------------------------------------------------------------
 # Account blocks
 # ---------------------------------------------------------------------------
 
@@ -1721,6 +1889,27 @@ def build_receipt_review_blocks(
         blocks.append({
             "type": "section",
             "text": {"type": "mrkdwn", "text": items_text},
+        })
+
+    # All text (OCR transcription)
+    all_text = extracted_data.get("all_text")
+    if all_text:
+        # Slack section text limit is 3000 chars
+        truncated = all_text[:2900]
+        if len(all_text) > 2900:
+            truncated += "\n_...truncated_"
+        blocks.append({"type": "divider"})
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"*All Text on Document:*\n```{truncated}```"},
+        })
+
+    # Notes
+    notes = extracted_data.get("notes")
+    if notes:
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"*Notes:*\n{notes[:2000]}"},
         })
 
     # Warnings

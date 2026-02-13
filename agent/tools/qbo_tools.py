@@ -59,6 +59,12 @@ def _get_qbo_client() -> QBOClient:
     raise ValueError("No QBO clients configured")
 
 
+def set_current_client(realm_id: str) -> None:
+    """Set the current QBO client by realm_id. Called by Slack bot per-user."""
+    global _current_client
+    _current_client = realm_id
+
+
 # =============================================================================
 # Tool Definitions
 # =============================================================================

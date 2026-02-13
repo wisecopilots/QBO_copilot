@@ -40,7 +40,7 @@ class QBOClient:
         self,
         realm_id: Optional[str] = None,
         tokens_file: Optional[Path] = None,
-        environment: str = "sandbox",
+        environment: Optional[str] = None,
         default_tax_code: Optional[str] = None
     ):
         """

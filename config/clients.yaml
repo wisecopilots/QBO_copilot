@@ -4,6 +4,14 @@
 # The agent can switch between clients to query different companies.
 
 clients:
+  - name: "Wiseretail.io"
+    realm_id: "9341456135899239"
+    primary_contact: "jim@wiseretail.io"
+    slack_channel: "#qbo-wiseretail"
+    metadata:
+      environment: production
+      notes: "Production QBO company"
+
   # QBO Sandbox Company (for development/testing)
   - name: "Sandbox Company"
     realm_id: "9341456144523072"
@@ -12,12 +20,3 @@ clients:
     metadata:
       environment: sandbox
       notes: "Intuit developer sandbox for testing"
-
-  # Add more clients as needed:
-  # - name: "Acme Corporation"
-  #   realm_id: "1234567890"
-  #   primary_contact: "cfo@acme.com"
-  #   slack_channel: "#acme-accounting"
-  #   metadata:
-  #     industry: "Manufacturing"
-  #     fiscal_year_end: "December"

@@ -222,6 +222,30 @@ class CPACopilotSlackBot:
     def _register_message_handlers(self):
         """Register Slack event handlers for messages"""
 
+        # Handle file_share subtype separately (slack-bolt requires explicit subtype registration)
+        @self.app.event({"type": "message", "subtype": "file_share"})
+        def handle_file_share(event, say, client):
+            logger.info(f"File share event received: {event.get('channel_type')}")
+            if event.get("bot_id") or event.get("channel_type") != "im":
+                return
+
+            files = event.get("files", [])
+            image_files = [
+                f for f in files
+                if f.get("mimetype", "").startswith("image/")
+            ]
+            if image_files:
+                from integrations.slack.blocks import build_receipt_classify_blocks
+
+                for img_file in image_files:
+                    file_id = img_file.get("id", "")
+                    filename = img_file.get("name", "image")
+                    blocks = build_receipt_classify_blocks(file_id, filename)
+                    say(
+                        text=f"Image received: {filename}. Please classify it.",
+                        blocks=blocks,
+                    )
+
         @self.app.event("message")
         def handle_message(event, say, client):
             if event.get("bot_id") or event.get("channel_type") != "im":
@@ -230,7 +254,7 @@ class CPACopilotSlackBot:
             user_id = event.get("user")
             channel = event.get("channel")
 
-            # Check for file uploads (image scanning flow)
+            # Check for file uploads (image scanning flow) - fallback for events without subtype
             files = event.get("files", [])
             if files:
                 image_files = [
@@ -307,12 +331,12 @@ class CPACopilotSlackBot:
             query = command.get("text", "").strip()
             user_id = command.get("user_id")
 
-            if not query:
-                respond("Usage: `/qbo <query>`\n\nExamples:\n"
-                       "\u2022 `/qbo show me expense accounts`\n"
-                       "\u2022 `/qbo list unpaid invoices`\n"
-                       "\u2022 `/qbo create customer John Smith`\n"
-                       "\u2022 `/qbo receipts` — view receipt queue")
+            if not query or query.lower() in ("help", "?"):
+                from integrations.slack.blocks import _build_help_blocks
+                respond(
+                    text="QBO Copilot — Help",
+                    blocks=_build_help_blocks(),
+                )
                 return
 
             # Handle receipts subcommand
@@ -597,6 +621,7 @@ class CPACopilotSlackBot:
             build_onboarding_dashboard_blocks,
             build_waiting_queues_blocks,
             build_receipt_queue_summary_blocks,
+            build_home_capabilities_blocks,
         )
         from agent.tools.qbo_tools import (
             qbo_get_accounts,
@@ -678,6 +703,9 @@ class CPACopilotSlackBot:
                     blocks.extend(build_receipt_queue_summary_blocks(receipt_summary))
                 except Exception as rq_err:
                     logger.debug(f"Receipt queue not available: {rq_err}")
+
+                # Capabilities / help section
+                blocks.extend(build_home_capabilities_blocks())
 
                 client.views_publish(
                     user_id=user_id,
@@ -1425,6 +1453,8 @@ class CPACopilotSlackBot:
             with urllib.request.urlopen(req) as resp:
                 image_bytes = resp.read()
 
+            logger.info(f"Downloaded {len(image_bytes)} bytes from Slack for receipt #{receipt_id} ({mime_type})")
+
             # Upload to Google Drive (best-effort)
             drive_file_id = None
             drive_folder_id = None
@@ -1639,6 +1669,7 @@ class CPACopilotSlackBot:
             build_onboarding_dashboard_blocks,
             build_waiting_queues_blocks,
             build_receipt_queue_summary_blocks,
+            build_home_capabilities_blocks,
         )
 
         clients = self.db.list_clients()
@@ -1672,6 +1703,9 @@ class CPACopilotSlackBot:
             blocks.extend(build_receipt_queue_summary_blocks(receipt_summary))
         except Exception:
             pass
+
+        # Capabilities / help section
+        blocks.extend(build_home_capabilities_blocks())
 
         return blocks[:100]  # Slack limit
 
