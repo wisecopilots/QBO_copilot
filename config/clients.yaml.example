@@ -1,0 +1,20 @@
+# QBO Copilot - Client Companies Configuration
+# Copy this file to clients.yaml and update with your values.
+# Each client maps a QBO company to a Slack channel.
+# Run 'python3 qbo/oauth.py' first to get your realm_id.
+
+clients:
+  # Your first QBO company (created by setup.sh)
+  - name: "My Company"           # Display name shown in Slack
+    realm_id: "YOUR_REALM_ID"    # From QBO OAuth (numeric ID)
+    primary_contact: "you@example.com"
+    slack_channel: "#qbo-general" # Slack channel for this company
+    metadata:
+      environment: sandbox        # sandbox or production
+      notes: "Primary QBO company"
+
+  # Add more companies by running oauth.py again:
+  # - name: "Second Company"
+  #   realm_id: "ANOTHER_REALM_ID"
+  #   primary_contact: "client@example.com"
+  #   slack_channel: "#qbo-client2"

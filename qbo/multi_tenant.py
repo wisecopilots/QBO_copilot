@@ -72,7 +72,7 @@ class TenantManager:
                 'clients': [
                     {
                         'name': 'Sandbox Company',
-                        'realm_id': '9341456144523072',
+                        'realm_id': 'YOUR_REALM_ID',
                         'primary_contact': 'sandbox@example.com',
                         'slack_channel': '#qbo-sandbox'
                     }

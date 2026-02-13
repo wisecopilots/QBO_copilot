@@ -104,7 +104,7 @@ class CPACopilotSlackBot:
         # Agentic loop - let Claude call tools and continue
         for _ in range(10):  # max iterations
             response = client.messages.create(
-                model="claude-sonnet-4-5-20250929",
+                model=os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-5-20250929"),
                 max_tokens=4096,
                 system=system_prompt,
                 tools=self.tool_schemas,

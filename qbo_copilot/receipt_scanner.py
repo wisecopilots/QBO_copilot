@@ -8,6 +8,7 @@ receipts, invoices, bills, and bank statements.
 import base64
 import json
 import logging
+import os
 from typing import Dict, Any, Optional, Tuple
 
 import anthropic
@@ -82,7 +83,7 @@ def scan_receipt(
     image_b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model=os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-5-20250929"),
         max_tokens=2048,
         messages=[
             {

@@ -1,142 +1,235 @@
 # QBO Copilot
 
-AI-powered assistant for managing QuickBooks Online through conversational interfaces.
+**AI-powered QuickBooks Online assistant for CPAs -- manage your clients' books from Slack.**
 
-**Contact:** jim.voltbot@gmail.com
+QBO Copilot connects your Slack workspace to QuickBooks Online through Claude AI. Ask questions in plain English, create invoices, scan receipts, and manage multiple client companies without leaving Slack. It is built for accounting firms that want to move faster.
 
-## Overview
+![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
+![License MIT](https://img.shields.io/badge/license-MIT-green)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
-QBO Copilot is an AI agent that acts as a member of your Slack/Teams/WhatsApp community, helping you:
-- Query QuickBooks Online data across multiple client companies
-- Execute accounting workflows through natural language
-- Follow up with company employees via email/messaging
-- Track and manage accounting tasks
+---
 
-## Architecture
+## Key Features
+
+- **Natural language queries** -- ask things like "show me all unpaid invoices over $5,000" and get formatted results in Slack
+- **Full CRUD operations** -- create and manage invoices, expenses, customers, vendors, journal entries, and more
+- **Receipt and invoice scanning** -- upload images in Slack and Claude Vision OCR extracts line items, totals, and vendor details
+- **Multi-company support** -- switch between QBO client companies within Slack, each mapped to its own channel
+- **Client onboarding workflow** -- a 6-phase state machine that tracks new client setup from intake to go-live
+- **Home tab dashboard** -- see account summaries, receipt queue status, and onboarding progress at a glance
+- **Slash command with interactive UI** -- `/qbo` opens dropdowns, modals, and buttons for common operations
+- **Message shortcuts** -- right-click any Slack message to convert it into a case or document request
+- **Google Drive document vault** -- (optional) auto-organize client documents into per-client folder structures
+- **25+ tool functions** -- a full registry of QBO operations exposed to the AI agent with structured schemas
+
+## How It Works
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Messaging Channels                        │
-│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐           │
-│  │  Slack  │ │WhatsApp │ │  Teams  │ │ Discord │           │
-│  └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘           │
-│       └──────────┼──────────┼──────────┘                   │
-│                  ▼                                          │
-│         ┌───────────────┐                                   │
-│         │  QBO Copilot  │ ◄── OpenClaw + Claude            │
-│         │    (Agent)    │                                   │
-│         └───────┬───────┘                                   │
-│                 │                                           │
-│    ┌────────────┼────────────┐                             │
-│    ▼            ▼            ▼                             │
-│ ┌──────┐  ┌──────────┐  ┌────────┐                        │
-│ │ QBO  │  │   n8n    │  │ Email  │                        │
-│ │ API  │  │Workflows │  │  SMTP  │                        │
-│ └──────┘  └──────────┘  └────────┘                        │
-└─────────────────────────────────────────────────────────────┘
+You (Slack)  -->  QBO Copilot (Claude AI)  -->  QuickBooks Online
 ```
+
+You send a message or use a slash command in Slack. The bot routes your request to the Claude-powered agent, which selects the right tool, calls the QBO REST API, and returns a rich Block Kit response back to your channel.
+
+## Quick Start
+
+```bash
+git clone https://github.com/qbo-copilot/qbo-copilot.git
+cd qbo-copilot
+bash setup.sh
+```
+
+Then open Slack, DM the bot, and start asking questions.
+
+## What You'll Need
+
+| Requirement | Details |
+|---|---|
+| Operating system | macOS 12+ (Apple Silicon or Intel) |
+| Python | 3.11 or newer |
+| QuickBooks Online | Any account (sandbox works for testing) |
+| Slack workspace | Admin access to install apps |
+| Anthropic API key | For Claude ([console.anthropic.com](https://console.anthropic.com)) |
+| Disk space | ~500 MB |
+
+## Features Showcase
+
+### Natural Language Queries
+
+Ask questions the way you would ask a colleague:
+
+```
+> Show me all invoices over $5,000 that are past due
+> What's the total accounts receivable for Acme Corp?
+> List all vendors we paid last month
+```
+
+The agent translates your question into the appropriate QBO API calls and returns formatted results.
+
+<!-- screenshot placeholder -->
+
+### Receipt Scanning
+
+Upload a receipt or invoice image directly in Slack. The bot detects the file, asks you to classify it (receipt, invoice, or bill), then runs Claude Vision OCR in the background. When processing finishes, you get a review card with extracted fields -- vendor, date, line items, totals -- and one-click actions to approve or edit before posting to QBO.
+
+<!-- screenshot placeholder -->
+
+### Multi-Company
+
+CPA firms manage many clients. QBO Copilot maps each Slack channel to a QBO company through `config/clients.yaml`. Switch context with a command:
+
+```
+> /qbo switch Acme Corp
+```
+
+The bot confirms the switch and all subsequent queries in that channel target the new company.
+
+<!-- screenshot placeholder -->
+
+### Home Tab Dashboard
+
+Open the QBO Copilot app home tab in Slack to see a summary dashboard: account balances, recent transactions, receipt queue counts, and onboarding progress for each client.
+
+<!-- screenshot placeholder -->
+
+### Client Onboarding
+
+New client setup is tracked through a 6-phase state machine (phases 0 through 6). Each phase has required steps, blocker detection, and progress tracking. The onboarding status is persisted in SQLite and visible from the Home tab and via slash commands.
+
+<!-- screenshot placeholder -->
 
 ## Project Structure
 
 ```
 qbo-copilot/
-├── agent/                    # OpenClaw/Claude brain
-│   ├── main.py              # Agent entry point
-│   ├── tools/               # Agent tools
-│   │   ├── qbo_tools.py     # QBO query/action tools
-│   │   ├── slack_tools.py   # Slack messaging
-│   │   ├── email_tools.py   # Email sending
-│   │   └── n8n_tools.py     # Complex workflow triggers
-│   ├── prompts/             # System prompts
-│   └── memory/              # Conversation state
-├── integrations/            # Messaging channel adapters
-│   ├── slack/               # Slack bot
-│   ├── whatsapp/            # WhatsApp Business API
-│   ├── teams/               # Microsoft Teams
-│   └── discord/             # Discord bot
-├── qbo/                     # QuickBooks Online client
-│   ├── client.py            # API client
-│   ├── oauth.py             # OAuth token management
-│   └── multi_tenant.py      # Multi-company support
-├── n8n/                     # Workflow engine
-│   ├── docker-compose.yml   # n8n deployment
-│   └── workflows/           # Exported workflows
-├── config/                  # Configuration
-│   ├── .env.example         # Environment template
-│   └── clients.yaml         # Client company configs
-└── docker-compose.yml       # Full stack deployment
+├── agent/
+│   ├── main.py                    # CPACopilotAgent -- orchestrates Claude + tools
+│   └── tools/
+│       └── qbo_tools.py           # 25+ tool definitions for QBO operations
+├── integrations/
+│   ├── slack/
+│   │   ├── bot.py                 # Slack bot (Socket Mode, slash commands, shortcuts)
+│   │   └── blocks.py              # Block Kit builders for rich Slack UI
+│   └── google_drive/
+│       └── client.py              # Google Drive document vault (optional)
+├── qbo/
+│   ├── client.py                  # QBO REST API wrapper with OAuth token management
+│   ├── multi_tenant.py            # Multi-company client manager
+│   └── oauth.py                   # OAuth setup and token refresh
+├── qbo_copilot/
+│   ├── receipt_scanner.py         # Claude Vision OCR for receipts/invoices
+│   ├── onboarding/
+│   │   ├── state_machine.py       # 6-phase onboarding workflow
+│   │   └── doc_templates.py       # Document request templates
+│   └── data/
+│       ├── onboarding_db.py       # SQLite persistence layer
+│       └── migrations/            # SQL migration scripts
+├── config/
+│   ├── .env.example               # Environment variable template
+│   ├── clients.yaml               # Client-to-QBO-company mappings
+│   ├── slack-app-manifest.json    # Slack app definition
+│   └── tokens/                    # Per-client OAuth token files (auto-managed)
+├── tests/
+│   ├── test_qbo_tools.py          # Integration tests (runs against QBO sandbox)
+│   ├── test_qbo_interactive.py    # Interactive test suite
+│   └── test_qbo_quick.sh          # Quick validation script
+├── docker-compose.yml             # Full stack deployment
+├── Dockerfile.agent               # Agent container
+├── Dockerfile.slack               # Slack bot container
+└── requirements.txt               # Python dependencies
 ```
 
-## Quick Start
+## Configuration
 
-### Prerequisites
-- Docker and Docker Compose
-- Python 3.11+
-- Claude Pro/Max subscription (for OpenClaw)
-- QuickBooks Online Developer account
+**`config/.env`** -- All secrets and API keys. Copy from `.env.example` and fill in your values:
 
-### Setup
+- `ANTHROPIC_API_KEY` -- your Claude API key
+- `QBO_CLIENT_ID` / `QBO_CLIENT_SECRET` -- from the Intuit Developer portal
+- `SLACK_BOT_TOKEN` / `SLACK_APP_TOKEN` -- from your Slack app settings
+- `QBO_ENVIRONMENT` -- `sandbox` (default) or `production`
 
-1. Clone the repository:
-```bash
-git clone https://github.com/jimbojumbojetplane/qbo-copilot.git
-cd qbo-copilot
-```
+**`config/clients.yaml`** -- Maps company names to QBO realm IDs and Slack channels. Add a new block for each client company you manage.
 
-2. Copy and configure environment:
-```bash
-cp config/.env.example .env
-# Edit .env with your credentials
-```
+**`config/slack-app-manifest.json`** -- Import this into Slack to create the app with all required scopes, slash commands, and shortcuts pre-configured.
 
-3. Start services:
+See the `config/` directory for full examples.
+
+## Docker (Optional)
+
+Run the full stack (agent, Slack bot, n8n workflow engine) with Docker Compose:
+
 ```bash
 docker-compose up -d
 ```
 
-4. Configure QBO OAuth:
+This starts three services: the QBO Copilot agent, the Slack bot in Socket Mode, and an n8n instance for workflow automation. Configuration is read from `config/.env`.
+
+## FAQ
+
+<details>
+<summary>How much does it cost to run?</summary>
+
+The main cost is the Anthropic API. A typical CPA firm making 50-100 queries per day will spend roughly $5-15/month on Claude API calls. QBO API access is free with your QuickBooks subscription. Slack is free for small workspaces or included in paid plans.
+</details>
+
+<details>
+<summary>Is my data secure?</summary>
+
+QBO Copilot runs on your own infrastructure. OAuth tokens are stored locally in `config/tokens/` and never leave your machine. All communication with QBO uses HTTPS. No data is sent to third parties beyond the Anthropic API (for LLM processing) and Intuit (for QBO operations). You control the deployment.
+</details>
+
+<details>
+<summary>Which QBO editions are supported?</summary>
+
+Any QuickBooks Online edition works: Simple Start, Essentials, Plus, and Advanced. The QBO sandbox (free through the Intuit Developer portal) is fully supported for testing.
+</details>
+
+<details>
+<summary>Does it work on Windows or Linux?</summary>
+
+The project is developed and tested on macOS but should run on any platform with Python 3.11+. Docker deployment works on Linux and Windows with WSL2. Some setup scripts may need minor adjustments for non-macOS environments.
+</details>
+
+<details>
+<summary>Can I use a different LLM?</summary>
+
+The agent layer in `agent/main.py` is built around the Anthropic SDK and Claude's tool-use capabilities. Swapping in a different LLM would require modifying the agent to use that provider's SDK and ensuring the model supports structured tool calling. The tool definitions in `qbo_tools.py` are provider-agnostic.
+</details>
+
+<details>
+<summary>How do I add another QBO company?</summary>
+
+Add a new entry to `config/clients.yaml` with the company name, QBO realm ID, and Slack channel. Then run the OAuth flow (`python qbo/oauth.py`) to authorize the new company. The token is saved automatically and the bot picks it up on the next request.
+</details>
+
+<details>
+<summary>What Slack permissions are needed?</summary>
+
+The app requires Socket Mode (for real-time events without a public URL) and the scopes defined in `config/slack-app-manifest.json`. Key scopes include `chat:write`, `commands`, `files:read`, `im:history`, `im:read`, `im:write`, and `app_mentions:read`. You need Slack workspace admin access to install the app.
+</details>
+
+<details>
+<summary>How do I run the tests?</summary>
+
+Tests run against the real QBO sandbox API (not mocked). Make sure your sandbox credentials are configured in `config/.env`, then run:
+
 ```bash
-python qbo/oauth.py setup
+python -m pytest tests/ -v
 ```
 
-5. Add Slack bot to your workspace (see integrations/slack/README.md)
+You can also run a single test class or test method. See the `CLAUDE.md` file for detailed test commands.
+</details>
 
-## Features
+## Contributing
 
-### QBO Integration
-- Query any QBO entity (Accounts, Customers, Vendors, Invoices, etc.)
-- Full QBO Query Language support
-- Multi-tenant: Access multiple client companies with one setup
-- Automatic OAuth token refresh
-
-### Messaging
-- **Slack**: Full bot integration with slash commands
-- **WhatsApp**: Business API integration (application required)
-- **Teams**: Coming soon
-- **Discord**: Coming soon
-
-### Workflows
-- 42 pre-built QBO actions via n8n
-- Custom workflow creation
-- Scheduled tasks and reminders
-
-## Development
-
-### Running locally
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run agent
-python agent/main.py
-
-# Run Slack bot
-python integrations/slack/bot.py
-```
-
-### Testing with QBO Sandbox
-The project is configured to use QBO Sandbox by default. Set `QBO_ENVIRONMENT=production` in `.env` for live data.
+Contributions are welcome. Please see [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines on submitting pull requests, reporting issues, and coding standards.
 
 ## License
 
-MIT
+[MIT](LICENSE)
+
+## Built With
+
+- [Claude by Anthropic](https://www.anthropic.com/claude) -- AI model powering the agent
+- [slack-bolt](https://github.com/slackapi/bolt-python) -- Slack app framework for Python
+- [QuickBooks Online API](https://developer.intuit.com/app/developer/qbo/docs/get-started) -- Intuit's REST API for accounting data

@@ -2,6 +2,11 @@
 .env
 config/.env
 config/tokens/
+config/clients.yaml
+config/google-service-account.json
+
+# SQLite databases
+*.sqlite
 
 # Python
 __pycache__/
