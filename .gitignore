@@ -1,0 +1,46 @@
+# Environment and secrets
+.env
+config/.env
+config/tokens/
+config/clients.yaml
+config/google-service-account.json
+
+# SQLite databases
+*.sqlite
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.eggs/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# n8n data (if running locally)
+n8n_data/
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
