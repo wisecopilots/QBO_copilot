@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WiseCopilots — AI-Powered QuickBooks Assistant for CPAs</title>
+  <meta name="description" content="QBO Copilot: Ask questions in plain English, create invoices, scan receipts, manage multiple clients — from Slack and WhatsApp. Built for CPAs.">
+  <meta name="keywords" content="QuickBooks, QBO, AI, CPA, accounting, Slack, WhatsApp, Claude, invoices, receipts, bookkeeping">
+  <meta property="og:title" content="WiseCopilots — AI-Powered QuickBooks Assistant">
+  <meta property="og:description" content="Ask questions in plain English. Create invoices. Scan receipts. Manage multiple clients. All from Slack.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://wisecopilots.com">
+  <link rel="canonical" href="https://wisecopilots.com">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Favicon (inline SVG data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>W</text></svg>">
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+  ============================================ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="#home" class="nav-logo"><img src="assets/logo.svg" alt="WiseCopilots" class="nav-logo-icon">Wise<span>Copilots</span></a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#beta">Beta Program</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       SECTION 1: HERO
+  ============================================ -->
+  <section id="home" class="hero">
+    <div class="container">
+      <h1 class="fade-in">Your AI-Powered<br>QuickBooks Assistant</h1>
+      <p class="hero-sub fade-in fade-in-delay-1">
+        Ask questions in plain English. Create invoices. Scan receipts. Manage multiple clients. All from Slack &mdash; with WhatsApp coming soon.
+      </p>
+      <div class="hero-cta fade-in fade-in-delay-2">
+        <a href="#contact" class="btn btn-primary">Get Early Access</a>
+        <a href="https://github.com/wisecopilots/QBO_copilot" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 2: PAIN POINTS
+  ============================================ -->
+  <section id="problems" class="pain-section">
+    <div class="container">
+      <h2 class="section-title fade-in">CPAs Deserve Better Tools</h2>
+      <p class="section-subtitle fade-in fade-in-delay-1">The daily grind of manual accounting workflows is costing your firm hours every week.</p>
+
+      <div class="pain-grid">
+
+        <!-- Card 1: Manual Data Entry -->
+        <div class="pain-card fade-in fade-in-delay-1">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Manual Data Entry</h3>
+          <p>Switching between QBO tabs for each client. Copy-pasting data. Hours lost to repetitive tasks.</p>
+        </div>
+
+        <!-- Card 2: Receipt Chaos -->
+        <div class="pain-card fade-in fade-in-delay-2">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1z"/>
+              <line x1="8" y1="8" x2="16" y2="8"/>
+              <line x1="8" y1="12" x2="14" y2="12"/>
+              <line x1="8" y1="16" x2="12" y2="16"/>
+            </svg>
+          </div>
+          <h3>Receipt Chaos</h3>
+          <p>Chasing paper receipts. Manual categorization. Lost documents at tax time.</p>
+        </div>
+
+        <!-- Card 3: Client Switching -->
+        <div class="pain-card fade-in fade-in-delay-3">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24">
+              <polyline points="16 3 21 3 21 8"/>
+              <line x1="4" y1="20" x2="21" y2="3"/>
+              <polyline points="21 16 21 21 16 21"/>
+              <line x1="15" y1="15" x2="21" y2="21"/>
+              <line x1="4" y1="4" x2="9" y2="9"/>
+            </svg>
+          </div>
+          <h3>Client Switching</h3>
+          <p>Logging in and out of multiple QBO companies. No unified view across clients.</p>
+        </div>
+
+        <!-- Card 4: No Real-Time Visibility -->
+        <div class="pain-card fade-in fade-in-delay-4">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+              <line x1="2" y1="20" x2="22" y2="20"/>
+            </svg>
+          </div>
+          <h3>No Real-Time Visibility</h3>
+          <p>Waiting for month-end reports. No instant answers to client questions.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 3: FEATURES
+  ============================================ -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <h2 class="section-title fade-in">What QBO Copilot Does</h2>
+      <p class="section-subtitle fade-in fade-in-delay-1">Powerful AI capabilities purpose-built for multi-client accounting workflows.</p>
+
+      <div class="features-grid">
+
+        <!-- Feature 1 -->
+        <div class="feature-card fade-in fade-in-delay-1">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3>Natural Language Queries</h3>
+          <p>Ask "show me unpaid invoices over $5,000" and get formatted results instantly.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card fade-in fade-in-delay-2">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <h3>Invoice Management</h3>
+          <p>Create, send, and void invoices by typing in Slack. No QBO tab required.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card fade-in fade-in-delay-3">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <h3>Receipt Scanning</h3>
+          <p>Upload a photo. AI extracts vendor, date, amounts, and line items. One-click approve.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card fade-in fade-in-delay-4">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+              <line x1="12" y1="3" x2="12" y2="17"/>
+            </svg>
+          </div>
+          <h3>Multi-Company</h3>
+          <p>Switch between client QBO companies in one Slack channel. Channel-based routing.</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card fade-in fade-in-delay-5">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+          </div>
+          <h3>Client Onboarding</h3>
+          <p>7-phase guided setup: contacts, QBO connection, bank feeds, documents, systems, and rules.</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card fade-in fade-in-delay-6">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          <h3>Dashboard</h3>
+          <p>Home tab with live AR/AP/Cash metrics, receipt queue, and work queues.</p>
+        </div>
+
+        <!-- Feature 7: WhatsApp (Coming Soon) -->
+        <div class="feature-card feature-card-coming-soon fade-in fade-in-delay-7">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/>
+            </svg>
+          </div>
+          <h3>WhatsApp <span class="coming-soon-badge">Coming Soon</span></h3>
+          <p>Same powerful QBO assistant, accessible from WhatsApp for teams that prefer mobile messaging.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 4: HOW IT WORKS
+  ============================================ -->
+  <section id="how-it-works" class="how-section">
+    <div class="container">
+      <h2 class="section-title fade-in">How It Works</h2>
+      <p class="section-subtitle fade-in fade-in-delay-1">Three simple steps from question to answer.</p>
+
+      <div class="steps fade-in fade-in-delay-2">
+
+        <!-- Step 1 -->
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Send a Message</h3>
+          <p>DM the bot in Slack, use /qbo, or @mention in any channel. WhatsApp coming soon.</p>
+        </div>
+
+        <!-- Arrow -->
+        <div class="step-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>AI Processes</h3>
+          <p>Claude AI interprets your request and calls the right QBO API.</p>
+        </div>
+
+        <!-- Arrow -->
+        <div class="step-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Results</h3>
+          <p>Formatted answers, interactive cards, and one-click actions.</p>
+        </div>
+
+      </div>
+
+      <!-- Demo conversation -->
+      <div class="demo-box">
+        <div class="demo-line"><span class="demo-user">You:</span> show me unpaid invoices over $5,000</div>
+        <br>
+        <div class="demo-line"><span class="demo-bot">QBO Copilot:</span> Found 3 unpaid invoices:</div>
+        <div class="demo-line demo-indent">#1045 &mdash; Acme Corp &mdash; $7,500 &mdash; Due Feb 28</div>
+        <div class="demo-line demo-indent">#1052 &mdash; Beta Inc &mdash; $12,000 &mdash; Due Mar 5</div>
+        <div class="demo-line demo-indent demo-overdue">#1061 &mdash; Gamma LLC &mdash; $5,200 &mdash; Overdue (Jan 15)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 5: DEMO
+  ============================================ -->
+  <section id="demo" class="demo-section">
+    <div class="container">
+      <h2 class="section-title fade-in">See It In Action</h2>
+      <p class="section-subtitle fade-in fade-in-delay-1">Watch QBO Copilot handle real accounting workflows in Slack.</p>
+
+      <!-- Video placeholder -->
+      <div class="demo-video-wrapper fade-in fade-in-delay-2">
+        <div class="demo-video-placeholder">
+          <div class="demo-video-play">
+            <svg viewBox="0 0 24 24" width="64" height="64">
+              <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <polygon points="10,8 16,12 10,16" fill="currentColor"/>
+            </svg>
+          </div>
+          <p>Full walkthrough video coming soon</p>
+        </div>
+      </div>
+
+      <!-- Screenshot gallery -->
+      <div class="demo-gallery fade-in fade-in-delay-3">
+
+        <div class="demo-screenshot-card">
+          <div class="demo-screenshot-placeholder">
+            <svg viewBox="0 0 24 24" width="40" height="40">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          <h4>Home Tab Dashboard</h4>
+          <p>AR/AP balances, receipt queue, onboarding progress</p>
+        </div>
+
+        <div class="demo-screenshot-card">
+          <div class="demo-screenshot-placeholder">
+            <svg viewBox="0 0 24 24" width="40" height="40">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <h4>Receipt Scanning</h4>
+          <p>Upload, AI extraction, one-click approve</p>
+        </div>
+
+        <div class="demo-screenshot-card">
+          <div class="demo-screenshot-placeholder">
+            <svg viewBox="0 0 24 24" width="40" height="40">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h4>Natural Language Queries</h4>
+          <p>Ask in plain English, get formatted results</p>
+        </div>
+
+        <div class="demo-screenshot-card">
+          <div class="demo-screenshot-placeholder">
+            <svg viewBox="0 0 24 24" width="40" height="40">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+              <line x1="12" y1="3" x2="12" y2="17"/>
+            </svg>
+          </div>
+          <h4>Multi-Company Switch</h4>
+          <p>Seamless context switching between QBO clients</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 6: BETA PROGRAM
+  ============================================ -->
+  <section id="beta" class="beta-section">
+    <div class="container">
+      <h2 class="section-title fade-in">Beta Program &mdash; Limited to 5 Firms</h2>
+      <p class="section-subtitle fade-in fade-in-delay-1">Be among the first CPA firms to transform your QBO workflow with AI.</p>
+
+      <div class="beta-content fade-in fade-in-delay-2">
+
+        <div class="beta-price">
+          <div class="price-amount">$1,000</div>
+          <div class="price-label">one-time implementation fee</div>
+        </div>
+
+        <div>
+          <ul class="beta-list">
+            <li>1-hour discovery interview</li>
+            <li>Full QBO Copilot setup (on-prem or cloud)</li>
+            <li>Slack app configuration</li>
+            <li>Multi-company setup for all your clients</li>
+            <li>30-day hands-on support</li>
+            <li>Direct access to the development team</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="beta-cta fade-in fade-in-delay-3">
+        <a href="#contact" class="btn btn-white">Apply for Beta</a>
+        <p>Open source on GitHub &mdash; always free to self-host</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 6: ABOUT
+  ============================================ -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <h2 class="section-title fade-in">Built by WiseCopilots</h2>
+
+      <p class="about-text fade-in fade-in-delay-1">
+        We build AI-powered tools for professional services firms. QBO Copilot was born from watching CPAs spend hours on tasks that should take seconds. Built on Claude AI by Anthropic, integrated with Slack and QuickBooks Online.
+      </p>
+
+      <div class="credential-grid">
+
+        <div class="credential-card fade-in fade-in-delay-1">
+          <h3>Open Source</h3>
+          <p>Fully transparent codebase on GitHub</p>
+        </div>
+
+        <div class="credential-card fade-in fade-in-delay-2">
+          <h3>AI-Native</h3>
+          <p>Built on Claude by Anthropic with 25+ tools</p>
+        </div>
+
+        <div class="credential-card fade-in fade-in-delay-3">
+          <h3>CPA-Focused</h3>
+          <p>Designed for multi-client accounting workflows</p>
+        </div>
+
+      </div>
+
+      <p class="about-family fade-in fade-in-delay-4">
+        Part of the WiseRetail family &mdash; <a href="https://wiseretail.io" target="_blank" rel="noopener noreferrer">wiseretail.io</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       SECTION 7: CONTACT
+  ============================================ -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2 class="section-title fade-in">Get In Touch</h2>
+      <p class="section-subtitle fade-in fade-in-delay-1">Ready to streamline your QBO workflow? Drop us a line.</p>
+
+      <div class="contact-wrapper fade-in fade-in-delay-2">
+
+        <!-- Form -->
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/PLACEHOLDER" method="POST">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label for="firm">Firm Name</label>
+            <input type="text" id="firm" name="firm" required placeholder="Your firm">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="you@yourfirm.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone <span style="font-weight:400;color:#6c757d;">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required placeholder="Tell us about your firm and what you're looking for..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+
+        <!-- Info sidebar -->
+        <div class="contact-info">
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Email</h4>
+              <p><a href="mailto:jim@wisecopilots.com">jim@wisecopilots.com</a></p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Location</h4>
+              <p>Toronto, ON, Canada</p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+            </div>
+            <div>
+              <h4>GitHub</h4>
+              <p><a href="https://github.com/wisecopilots/QBO_copilot" target="_blank" rel="noopener noreferrer">wisecopilots/QBO_copilot</a></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+  ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 WiseCopilots. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://github.com/wisecopilots/QBO_copilot" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="#">Privacy</a>
+        <a href="https://wiseretail.io" target="_blank" rel="noopener noreferrer">wiseretail.io</a>
+      </div>
+      <p class="footer-powered">Powered by Claude AI &amp; QuickBooks Online API</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>

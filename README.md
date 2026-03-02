@@ -2,7 +2,7 @@
 
 **AI-powered QuickBooks Online assistant for CPAs -- manage your clients' books from Slack.**
 
-QBO Copilot connects your Slack workspace to QuickBooks Online through Claude AI. Ask questions in plain English, create invoices, scan receipts, and manage multiple client companies without leaving Slack. It is built for accounting firms that want to move faster.
+QBO Copilot connects your Slack workspace to QuickBooks Online through Claude AI. Ask questions in plain English, create invoices, scan receipts, and manage multiple client companies without leaving Slack. WhatsApp support is coming soon. It is built for accounting firms that want to move faster.
 
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![License MIT](https://img.shields.io/badge/license-MIT-green)
@@ -16,7 +16,7 @@ QBO Copilot connects your Slack workspace to QuickBooks Online through Claude AI
 - **Full CRUD operations** -- create and manage invoices, expenses, customers, vendors, journal entries, and more
 - **Receipt and invoice scanning** -- upload images in Slack and Claude Vision OCR extracts line items, totals, and vendor details
 - **Multi-company support** -- switch between QBO client companies within Slack, each mapped to its own channel
-- **Client onboarding workflow** -- a 6-phase state machine that tracks new client setup from intake to go-live
+- **Client onboarding workflow** -- a 7-phase state machine that tracks new client setup from intake to go-live
 - **Home tab dashboard** -- see account summaries, receipt queue status, and onboarding progress at a glance
 - **Slash command with interactive UI** -- `/qbo` opens dropdowns, modals, and buttons for common operations
 - **Message shortcuts** -- right-click any Slack message to convert it into a case or document request
@@ -34,8 +34,8 @@ You send a message or use a slash command in Slack. The bot routes your request 
 ## Quick Start
 
 ```bash
-git clone https://github.com/qbo-copilot/qbo-copilot.git
-cd qbo-copilot
+git clone https://github.com/wisecopilots/QBO_copilot.git
+cd QBO_copilot
 bash setup.sh
 ```
 
@@ -66,13 +66,13 @@ Ask questions the way you would ask a colleague:
 
 The agent translates your question into the appropriate QBO API calls and returns formatted results.
 
-<!-- screenshot placeholder -->
+> **Screenshot coming soon** — natural language query with formatted Slack response
 
 ### Receipt Scanning
 
 Upload a receipt or invoice image directly in Slack. The bot detects the file, asks you to classify it (receipt, invoice, or bill), then runs Claude Vision OCR in the background. When processing finishes, you get a review card with extracted fields -- vendor, date, line items, totals -- and one-click actions to approve or edit before posting to QBO.
 
-<!-- screenshot placeholder -->
+> **Screenshot coming soon** — receipt upload, classification, and AI-extracted review card
 
 ### Multi-Company
 
@@ -84,19 +84,19 @@ CPA firms manage many clients. QBO Copilot maps each Slack channel to a QBO comp
 
 The bot confirms the switch and all subsequent queries in that channel target the new company.
 
-<!-- screenshot placeholder -->
+> **Screenshot coming soon** — multi-company context switch in Slack
 
 ### Home Tab Dashboard
 
 Open the QBO Copilot app home tab in Slack to see a summary dashboard: account balances, recent transactions, receipt queue counts, and onboarding progress for each client.
 
-<!-- screenshot placeholder -->
+> **Screenshot coming soon** — Slack Home tab dashboard with live financial data
 
 ### Client Onboarding
 
-New client setup is tracked through a 6-phase state machine (phases 0 through 6). Each phase has required steps, blocker detection, and progress tracking. The onboarding status is persisted in SQLite and visible from the Home tab and via slash commands.
+New client setup is tracked through a 7-phase state machine (phases 0 through 6). Each phase has required steps, blocker detection, and progress tracking. The onboarding status is persisted in SQLite and visible from the Home tab and via slash commands.
 
-<!-- screenshot placeholder -->
+> **Screenshot coming soon** — onboarding progress tracker with phase completion
 
 ## Project Structure
 

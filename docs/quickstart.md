@@ -21,8 +21,8 @@ Optional:
 ## Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/qbo_copilot.git
-cd qbo_copilot
+git clone https://github.com/wisecopilots/QBO_copilot.git
+cd QBO_copilot
 ```
 
 ## Step 2: Create a Virtual Environment

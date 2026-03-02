@@ -44,3 +44,10 @@ logs/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Internal / private (not for public repo)
+brain.md
+crm/
+docs/engagement-playbook.md
+docs/product_research/
+QBO_*_Truth_Sprint*.md

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Owl body / shield shape -->
+  <path d="M24 4C14 4 8 12 8 22c0 8 4 14 8 18l4 4c1.5 1.5 2.5 0 4 0s2.5 1.5 4 0l4-4c4-4 8-10 8-18C40 12 34 4 24 4z" fill="#252C5B"/>
+  <!-- Owl face circle -->
+  <circle cx="24" cy="20" r="12" fill="#f8f9fa" opacity="0.15"/>
+  <!-- Left eye -->
+  <circle cx="19" cy="18" r="4" fill="#f8f9fa"/>
+  <circle cx="19" cy="18" r="2" fill="#6566C4"/>
+  <circle cx="18.5" cy="17.2" r="0.8" fill="#ffffff"/>
+  <!-- Right eye -->
+  <circle cx="29" cy="18" r="4" fill="#f8f9fa"/>
+  <circle cx="29" cy="18" r="2" fill="#6566C4"/>
+  <circle cx="28.5" cy="17.2" r="0.8" fill="#ffffff"/>
+  <!-- Beak -->
+  <path d="M22 23l2 3 2-3z" fill="#00A4E4"/>
+  <!-- Ear tufts -->
+  <path d="M12 10l3 5-5-1z" fill="#6566C4"/>
+  <path d="M36 10l-3 5 5-1z" fill="#6566C4"/>
+  <!-- Subtle wing lines -->
+  <path d="M14 28c2-1 4 0 5 2" stroke="#6566C4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M34 28c-2-1-4 0-5 2" stroke="#6566C4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>

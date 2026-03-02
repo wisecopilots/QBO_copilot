@@ -3,7 +3,7 @@ set -euo pipefail
 
 # =============================================================================
 # QBO Copilot - Interactive Bootstrap Script
-# https://github.com/your-org/qbo_copilot
+# https://github.com/wisecopilots/QBO_copilot
 # =============================================================================
 
 VERSION="1.0.0"
@@ -143,7 +143,7 @@ if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     echo "  - A Slack workspace with admin access"
     echo "  - An Anthropic API key"
     echo ""
-    echo "For detailed docs, see: https://github.com/your-org/qbo_copilot#readme"
+    echo "For detailed docs, see: https://github.com/wisecopilots/QBO_copilot#readme"
     exit 0
 fi
 
@@ -291,23 +291,46 @@ if [[ "$SKIP_ENV" == "false" ]]; then
 
     # --- QuickBooks Online ---
     echo ""
-    echo -e "${BOLD}QuickBooks Online credentials${NC}"
-    info "Create an app at https://developer.intuit.com/app/developer/dashboard"
-    info "You need the Client ID and Client Secret from your app's Keys tab."
+    echo -e "${BOLD}QuickBooks Online App Configuration${NC}"
+    echo ""
+    info "QBO Copilot needs an Intuit Developer app to connect to QuickBooks."
+    info "You can use the shared WiseCopilots app (fastest setup) or register your own."
+    echo ""
+    echo -e "  ${GREEN}1)${NC} Use WiseCopilots shared app ${YELLOW}(recommended — fastest setup)${NC}"
+    echo -e "  ${GREEN}2)${NC} Use your own Intuit Developer app"
     echo ""
 
-    prompt_value "QBO Client ID" qbo_client_id
-    while [[ -z "$qbo_client_id" ]]; do
-        error "Client ID is required."
-        prompt_value "QBO Client ID" qbo_client_id
+    prompt_value "Choice [1/2]" qbo_app_choice "1"
+    while [[ "$qbo_app_choice" != "1" && "$qbo_app_choice" != "2" ]]; do
+        error "Please enter 1 or 2."
+        prompt_value "Choice [1/2]" qbo_app_choice "1"
     done
-    set_env_value "QBO_CLIENT_ID" "$qbo_client_id" "$ENV_FILE"
 
-    prompt_value "QBO Client Secret" qbo_client_secret "" true
-    while [[ -z "$qbo_client_secret" ]]; do
-        error "Client Secret is required."
+    if [[ "$qbo_app_choice" == "1" ]]; then
+        # Shared WiseCopilots app
+        qbo_client_id="ABgPV5So1Mhy5VPC65mBDmAQ63Jyn8CeiI1ukbAKfchCGblsoS"
+        qbo_client_secret="yONgG8x5bvzQPuYoZj0EHiuDubE6jHghLnZBGrHZ"
+        success "Using WiseCopilots shared app credentials"
+    else
+        # Custom app
+        info "Create an app at https://developer.intuit.com/app/developer/dashboard"
+        info "You need the Client ID and Client Secret from your app's Keys tab."
+        echo ""
+
+        prompt_value "QBO Client ID" qbo_client_id
+        while [[ -z "$qbo_client_id" ]]; do
+            error "Client ID is required."
+            prompt_value "QBO Client ID" qbo_client_id
+        done
+
         prompt_value "QBO Client Secret" qbo_client_secret "" true
-    done
+        while [[ -z "$qbo_client_secret" ]]; do
+            error "Client Secret is required."
+            prompt_value "QBO Client Secret" qbo_client_secret "" true
+        done
+    fi
+
+    set_env_value "QBO_CLIENT_ID" "$qbo_client_id" "$ENV_FILE"
     set_env_value "QBO_CLIENT_SECRET" "$qbo_client_secret" "$ENV_FILE"
 
     prompt_value "QBO Environment (sandbox/production)" qbo_env "sandbox"
