@@ -35,8 +35,6 @@ python -m pytest tests/test_qbo_tools.py::TestReadOperations::test_get_accounts 
 # Format code
 black .
 
-# Docker deployment (all services)
-docker-compose up -d
 ```
 
 ## Architecture

@@ -16,6 +16,5 @@ Initial public release.
 - Slack integration: Socket Mode bot, `/qbo` slash command, Home tab dashboard, message shortcuts, interactive modals
 - Google Drive document vault with auto-created folder structures per client
 - OAuth token management with automatic refresh on 401 responses
-- Docker Compose deployment (agent + Slack bot + n8n)
 - Interactive setup script (`setup.sh`) with connection validation
 - Integration test suite running against QBO sandbox API

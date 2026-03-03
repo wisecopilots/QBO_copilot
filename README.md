@@ -133,9 +133,6 @@ qbo-copilot/
 │   ├── test_qbo_tools.py          # Integration tests (runs against QBO sandbox)
 │   ├── test_qbo_interactive.py    # Interactive test suite
 │   └── test_qbo_quick.sh          # Quick validation script
-├── docker-compose.yml             # Full stack deployment
-├── Dockerfile.agent               # Agent container
-├── Dockerfile.slack               # Slack bot container
 └── requirements.txt               # Python dependencies
 ```
 
@@ -153,16 +150,6 @@ qbo-copilot/
 **`config/slack-app-manifest.json`** -- Import this into Slack to create the app with all required scopes, slash commands, and shortcuts pre-configured.
 
 See the `config/` directory for full examples.
-
-## Docker (Optional)
-
-Run the full stack (agent, Slack bot, n8n workflow engine) with Docker Compose:
-
-```bash
-docker-compose up -d
-```
-
-This starts three services: the QBO Copilot agent, the Slack bot in Socket Mode, and an n8n instance for workflow automation. Configuration is read from `config/.env`.
 
 ## FAQ
 
@@ -187,7 +174,7 @@ Any QuickBooks Online edition works: Simple Start, Essentials, Plus, and Advance
 <details>
 <summary>Does it work on Windows or Linux?</summary>
 
-The project is developed and tested on macOS but should run on any platform with Python 3.11+. Docker deployment works on Linux and Windows with WSL2. Some setup scripts may need minor adjustments for non-macOS environments.
+The project is developed and tested on macOS but should run on any platform with Python 3.11+. Some setup scripts may need minor adjustments for non-macOS environments.
 </details>
 
 <details>

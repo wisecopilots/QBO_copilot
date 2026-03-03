@@ -29,7 +29,7 @@ What actually happened instead.
 - **OS:** (e.g., macOS 15.3, Ubuntu 24.04)
 - **Python version:** (e.g., 3.12.1)
 - **QBO environment:** sandbox / production
-- **Slack bot running via:** Socket Mode / Docker
+- **Slack bot running via:** Socket Mode
 
 ## Logs / Screenshots
 

@@ -194,12 +194,3 @@ python3 -m pytest tests/test_qbo_tools.py::TestReadOperations -v
 python3 -m pytest tests/test_qbo_tools.py::TestReadOperations::test_get_accounts -v
 ```
 
-## Docker Deployment
-
-For production deployment with Docker:
-
-```bash
-docker-compose up -d
-```
-
-This starts all services (Slack bot, etc.) in the background.

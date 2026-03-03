@@ -8,7 +8,7 @@ assignees: ""
 
 ## Which Setup Step
 
-Which part of the setup process are you stuck on? (e.g., OAuth configuration, Slack app creation, Docker deployment, running setup.sh)
+Which part of the setup process are you stuck on? (e.g., OAuth configuration, Slack app creation, running setup.sh)
 
 ## What Happened
 
@@ -23,7 +23,7 @@ What you expected to happen at this step.
 - **OS:** (e.g., macOS 15.3, Ubuntu 24.04)
 - **Python version:** (e.g., 3.12.1)
 - **QBO environment:** sandbox / production
-- **Installation method:** pip / Docker
+- **Installation method:** setup.sh / manual
 
 ## setup.sh Output
 
